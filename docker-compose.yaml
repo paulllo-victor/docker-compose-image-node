@@ -10,12 +10,15 @@ services:
     tty: true
     ports:
       - "8080:80"
+    depends_on:
+      - db
+      - node
 
   node:
     build: 
       context: node
     container_name: node
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh npm install node index.js
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node index.js
     networks:
       - nodenet
     volumes:
